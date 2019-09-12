@@ -1,0 +1,31 @@
+#!/bin/bash
+## Hermes 15/12/2015
+## Script to read AIRPLUG-AND output files and process
+## First, files have the lines with the "GPS" string cropped out. Then, a python program is called
+## to convert files into a CSV format.
+
+## ====>>>> THIS SCRIPT IS NOT REQUIRED ANYMORE <<<<<=====
+## It was replaced by a python script named AND_Trace_to_csv.py
+
+
+## reading command line parameters
+# directory path
+path=$1
+# file mask
+files=$2
+
+# composing complete file names
+FILES=$path$files
+
+echo $FILES
+
+counter=0
+## Looping through files
+for f in $FILES
+do
+	## cropping out lines with "GPS" string
+	grep -v "GPS" $f > $f.processed
+	./AND_Trace_to_csv.py $path $f.processed
+	counter=$((counter+1))
+	echo $counter
+done
